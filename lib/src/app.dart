@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:test_fl/src/bloc/login/login_bloc.dart';
 import 'package:test_fl/src/bloc/question/question_bloc.dart';
 import 'package:test_fl/src/bloc/quiz/quiz_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:test_fl/src/pages/login/login_page.dart';
 import 'package:test_fl/src/pages/routes.dart';
 
 final navigatorState = GlobalKey<NavigatorState>();
+final FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
 class QuizApp extends StatelessWidget {
   const QuizApp({super.key});

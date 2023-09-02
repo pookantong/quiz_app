@@ -1,13 +1,18 @@
 part of 'login_bloc.dart';
 
-@immutable
 sealed class LoginEvent extends Equatable {
+  const LoginEvent();
+
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [];
 }
 
-class LoginEventLogin extends LoginEvent {
-  final token;
-  
-  LoginEventLogin(this.token);
+class LoginInitialEvent extends LoginEvent {
+  final String username;
+  final String password;
+
+  const LoginInitialEvent(
+    this.username,
+    this.password,
+  );
 }

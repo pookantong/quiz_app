@@ -1,14 +1,12 @@
 part of 'quiz_bloc.dart';
 
-@immutable
 sealed class QuizEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class LoadQuiz extends QuizEvent {
-  final List<Quiz> quizzes;
+class LoadQuizInitialEvent extends QuizEvent {
   final int page;
-
-  LoadQuiz(this.quizzes, this.page);
+  
+  LoadQuizInitialEvent(this.page);
 }

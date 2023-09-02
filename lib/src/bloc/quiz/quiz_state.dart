@@ -1,28 +1,20 @@
 part of 'quiz_bloc.dart';
 
-class QuizState extends Equatable {
+sealed class QuizState extends Equatable {
+  @override
+  List<Object?> get props => [];
+}
+
+class LoadQuizInitial extends QuizState {}
+
+class LoadQuizLoadingState extends QuizState {}
+
+class LoadQuizSuccessfulState extends QuizState {
   final List<Quiz> quizzes;
   final int page;
-  final List<String> answers;
 
-  const QuizState({
-    this.quizzes = const [],
-    this.page = 1,
-    this.answers = const [],
+  LoadQuizSuccessfulState({
+    required this.quizzes,
+    required this.page,
   });
-
-  QuizState copyWith({
-    List<Quiz>? quizzes,
-    int? page,
-    List<String>? answers
-  }) {
-    return QuizState(
-      quizzes: quizzes ?? this.quizzes,
-      page: page ?? this.page,
-      answers: answers ?? this.answers,
-    );
-  }
-
-  @override
-  List<Object?> get props => [quizzes, page, answers];
 }

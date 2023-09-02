@@ -1,24 +1,16 @@
 part of 'login_bloc.dart';
 
-class LoginState extends Equatable {
-  final String token;
-  final bool status;
-
-  const LoginState({
-    this.token = "",
-    this.status = true
-  });
-
-  LoginState copywith({
-    String? token,
-    bool? status,
-  }) {
-    return LoginState(
-      token: token ?? this.token,
-      status: status ?? this.status
-    );
-  }
-
+sealed class LoginState extends Equatable {
+  const LoginState();
+  
   @override
-  List<Object?> get props => [token];
+  List<Object> get props => [];
 }
+
+class LoginInitial extends LoginState {}
+
+class LoginLoadingState extends LoginState {}
+
+class LoginErrorState extends LoginState {}
+
+class LoginSuccessfulState extends LoginState {}

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_fl/src/bloc/login/login_bloc.dart';
+import 'package:test_fl/src/app.dart';
 import 'package:test_fl/src/bloc/question/question_bloc.dart';
 import 'package:test_fl/src/bloc/result/result_bloc.dart';
-import 'package:test_fl/src/models/question.dart';
-import 'package:test_fl/src/services/question_service.dart';
+import 'package:test_fl/src/pages/routes.dart';
 
-class ResultPage extends StatelessWidget {
+class ResultPage extends StatefulWidget {
+  @override
+  State<ResultPage> createState() => _ResultPageState();
+}
+
+class _ResultPageState extends State<ResultPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,33 +19,44 @@ class ResultPage extends StatelessWidget {
       ),
       body: BlocBuilder<ResultBloc, ResultState>(
         builder: (context, state) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Total Score: ${state.score}',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 20),
-                Column(
-                  children: List.generate(state.questions.length, (index) {
-                    final question = state.questions[index];
-                    final isCorrect = state.status[index];
-                    final score = isCorrect ? question.score : 0;
+          switch (state.runtimeType) {
+            case ResultSuccessfulState:
+              final successState = state as ResultSuccessfulState;
+              final result = successState.result;
 
-                    return ListTile(
-                      title: Text(question.name),
-                      subtitle: Text(
-                          'Your Answer: ${isCorrect ? "Correct" : "Incorrect"}'),
-                      trailing: Text('Score: $score'),
-                    );
-                  }),
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'Total Score: ${result.score}',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 20),
+                    Column(
+                      children: List.generate(result.questions.length, (index) {
+                        final question = result.questions[index];
+                        final isCorrect = result.status[index];
+                        final score = isCorrect ? question.score : 0;
+
+                        return ListTile(
+                          title: Text(question.name),
+                          subtitle: Text(
+                              'Your Answer: ${isCorrect ? "Correct" : "Incorrect"}'),
+                          trailing: Text('Score: $score'),
+                        );
+                      }),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          );
+              );
+            default:
+              return SizedBox(
+                child: Text('data'),
+              );
+          }
         },
       ),
       bottomNavigationBar: Padding(
@@ -68,23 +83,18 @@ class ResultPage extends StatelessWidget {
   }
 
   Future<void> _handleRestart(BuildContext context) async {
-    final LoginState loginState = context.read<LoginBloc>().state;
-    final int quizId = context.read<QuestionBloc>().state.quizId;
-    final Question question = await QuestionService().getQuestion(
-      quizId,
-      1,
-      loginState.token,
-    );
-    context.read<QuestionBloc>().add(QuestionRestart(
-          quizId,
-          question.choices,
-          question.name,
-          question.score,
-          question.maxPage,
-        ));
+    final ResultState resultState = context.read<ResultBloc>().state;
+    final resultSuccessfulState = resultState as ResultSuccessfulState;
+    Navigator.pop(context);
+    context
+        .read<QuestionBloc>()
+        .add(QuestionFirstLoadEvent(resultSuccessfulState.quizId));
   }
 
   void _handleHome(BuildContext context) {
-    context.read<QuestionBloc>().add(ClearQuestion());
+    Navigator.pop(
+      navigatorState.currentContext!,
+      AppRoute.home,
+    );
   }
 }

@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_fl/src/bloc/login/login_bloc.dart';
 import 'package:test_fl/src/bloc/quiz/quiz_bloc.dart';
-import 'package:test_fl/src/models/quiz.dart';
 import 'package:test_fl/src/pages/routes.dart';
-import 'package:test_fl/src/services/home_service.dart';
-import 'package:test_fl/src/services/login_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -42,19 +39,29 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     ..._buildTextFields(),
-                    BlocBuilder<LoginBloc, LoginState>(
+                    BlocConsumer<LoginBloc, LoginState>(
+                      listener: (context, state) {
+                        if (state.runtimeType == LoginSuccessfulState) {
+                          context.read<QuizBloc>().add(LoadQuizInitialEvent(1));
+                        }
+                      },
                       builder: (context, state) {
-                        if (!state.status && state.token == '')
-                          // ignore: curly_braces_in_flow_control_structures
-                          return Container(
-                              height: 60,
-                              padding: EdgeInsets.all(10),
-                              child: const Text(
-                                "เอ๋~ ลืมรหัสผ่านหรอ?\nรหัสผ่านยังลืมได้ แล้วทำไมถึงยังลืมเขาไม่ได้?",
-                                style:
-                                    TextStyle(color: Colors.red, fontSize: 13),
-                              ));
-                        return const SizedBox(height: 40);
+                        switch (state.runtimeType) {
+                          case LoginLoadingState:
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          case LoginErrorState:
+                            return Container(
+                                height: 60,
+                                padding: EdgeInsets.all(10),
+                                child: const Text(
+                                  "เอ๋~ ลืมรหัสผ่านหรอ?\nรหัสผ่านยังลืมได้ แล้วทำไมถึงยังลืมเขาไม่ได้?",
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 13),
+                                ));
+                          default:
+                            return const SizedBox();
+                        }
                       },
                     ),
                     ..._buildButton(),
@@ -69,15 +76,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _handleClickLogin() async {
-    final String token = await LoginService().login(
-      _usernameController.text,
-      _passwordController.text,
-    );
-    if (token != "") {
-      final List<Quiz> quizzes = await HomeService().getQuiz(1, token);
-      context.read<QuizBloc>().add(LoadQuiz(quizzes, 1));
-    }
-    context.read<LoginBloc>().add(LoginEventLogin(token));
+    context.read<LoginBloc>().add(LoginInitialEvent(
+          _usernameController.text,
+          _passwordController.text,
+        ));
   }
 
   void _handleClickRegister() {
