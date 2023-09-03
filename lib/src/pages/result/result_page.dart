@@ -6,6 +6,8 @@ import 'package:test_fl/src/bloc/result/result_bloc.dart';
 import 'package:test_fl/src/pages/routes.dart';
 
 class ResultPage extends StatefulWidget {
+   const ResultPage({Key? key}) : super(key: key);
+
   @override
   State<ResultPage> createState() => _ResultPageState();
 }

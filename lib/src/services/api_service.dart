@@ -65,7 +65,7 @@ class ApiService {
 
   Future<Result> getResult(int quizId, List<String> answers) async {
     final token = await secureStorage.read(key: 'jwt');
-    final body = json.encode({'answers': answers}); // Encode the entire map
+    final body = json.encode({'answers': answers});
     final response = await http.post(
       Uri.parse("$_baseUrl/quiz/$quizId"),
       body: body,
@@ -92,6 +92,23 @@ class ApiService {
 
     final response =
         await http.post(Uri.parse("$_baseUrl/auth/signup"), body: body);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Failed to fetch result');
+    }
+  }
+
+  Future<bool> createQuiz(QuizFormModel quizFormModel) async {
+    Map<String, dynamic> body = quizFormModel.toJson();
+    var test = jsonEncode(body);
+    final response = await http.post(
+      Uri.parse("$_baseUrl/quiz"),
+      body: test,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
     if (response.statusCode == 200) {
       return true;
     } else {

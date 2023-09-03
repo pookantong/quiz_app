@@ -1,3 +1,5 @@
+import 'package:test_fl/src/models/question.dart';
+
 class Quiz {
   final int quizId;
   final String name;
@@ -18,5 +20,25 @@ class Quiz {
       score: json['score'],
       completed: json['completed'],
     );
+  }
+}
+
+class QuizFormModel {
+  String name;
+  int score;
+  List<QuestionFormModel> questions;
+
+  QuizFormModel({
+    required this.name,
+    required this.score,
+    required this.questions,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'score': score,
+      'questions': questions.map((question) => question.toJson()).toList(),
+    };
   }
 }

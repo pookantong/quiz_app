@@ -22,3 +22,26 @@ class Question {
     );
   }
 }
+
+class QuestionFormModel {
+  String name;
+  List<String> choices;
+  String correctAnswer;
+  int score;
+
+  QuestionFormModel({
+    required this.name,
+    required this.choices,
+    required this.correctAnswer,
+    required this.score,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'choices': choices,
+      'correctAnswer': correctAnswer,
+      'score': score,
+    };
+  }
+}

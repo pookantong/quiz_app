@@ -15,11 +15,15 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
 
   Future<FutureOr<void>> _loadQuizInitialEvent(
       LoadQuizInitialEvent event, Emitter<QuizState> emit) async {
+    int page = event.page;
+    if (state is LoadQuizSuccessfulState) {
+      page = (state as LoadQuizSuccessfulState).page;
+    }
     emit(LoadQuizLoadingState());
     final List<Quiz> quizzes = await ApiService().getQuiz(event.page);
     emit(LoadQuizSuccessfulState(
       quizzes: quizzes,
-      page: event.page,
+      page: page,
     ));
   }
 }
