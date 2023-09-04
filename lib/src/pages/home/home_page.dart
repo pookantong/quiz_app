@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
                   );
 
                 default:
-                  return const SizedBox(
+                  return const Center(
                     child: Text('Loading...'),
                   );
               }

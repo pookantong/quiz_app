@@ -87,8 +87,8 @@ class _QuestionPageState extends State<QuestionPage> {
                   ),
                 );
               default:
-                return const SizedBox(
-                  child: Text('data'),
+                return const Center(
+                  child: Text('Loading...'),
                 );
             }
           },
