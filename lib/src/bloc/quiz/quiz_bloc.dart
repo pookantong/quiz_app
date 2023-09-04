@@ -11,19 +11,40 @@ part 'quiz_state.dart';
 class QuizBloc extends Bloc<QuizEvent, QuizState> {
   QuizBloc() : super(LoadQuizInitial()) {
     on<LoadQuizInitialEvent>(_loadQuizInitialEvent);
+    on<IncreasePageEvent>(_increasePageEvent);
+    on<DecreasePageEvent>(_decreasePageEvent);
   }
 
   Future<FutureOr<void>> _loadQuizInitialEvent(
       LoadQuizInitialEvent event, Emitter<QuizState> emit) async {
-    int page = event.page;
-    if (state is LoadQuizSuccessfulState) {
-      page = (state as LoadQuizSuccessfulState).page;
-    }
     emit(LoadQuizLoadingState());
-    final List<Quiz> quizzes = await ApiService().getQuiz(event.page);
+    final QuizJsonMaxPage quizJsonMaxPage =
+        await ApiService().getQuiz(event.page);
     emit(LoadQuizSuccessfulState(
-      quizzes: quizzes,
-      page: page,
-    ));
+        quizzes: quizJsonMaxPage.quizzes,
+        page: event.page,
+        maxPage: quizJsonMaxPage.maxPage));
+  }
+
+  FutureOr<void> _increasePageEvent(
+      IncreasePageEvent event, Emitter<QuizState> emit) {
+    final currentState = state;
+    if (currentState is LoadQuizSuccessfulState) {
+      final nextPage = currentState.page + 1;
+      if (nextPage <= currentState.maxPage) {
+        add(LoadQuizInitialEvent(nextPage));
+      }
+    }
+  }
+
+  FutureOr<void> _decreasePageEvent(
+      DecreasePageEvent event, Emitter<QuizState> emit) {
+    final currentState = state;
+    if (currentState is LoadQuizSuccessfulState) {
+      final prevPage = currentState.page - 1;
+      if (prevPage > 0) {
+        add(LoadQuizInitialEvent(prevPage));
+      }
+    }
   }
 }

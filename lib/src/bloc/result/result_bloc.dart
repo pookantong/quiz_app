@@ -20,6 +20,6 @@ class ResultBloc extends Bloc<ResultEvent, ResultState> {
       event.quizId,
       event.userAnswers,
     );
-    emit(ResultSuccessfulState(result, event.quizId));
+    emit(ResultSuccessfulState(result, event.quizId, event.userAnswers));
   }
 }

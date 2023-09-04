@@ -8,7 +8,7 @@ import 'package:test_fl/src/models/result.dart';
 class ApiService {
   static const _baseUrl = "http://10.0.2.2:8000";
 
-  Future<List<Quiz>> getQuiz(int page) async {
+  Future<QuizJsonMaxPage> getQuiz(int page) async {
     final token = await secureStorage.read(key: 'jwt');
     final response = await http.get(
       Uri.parse("$_baseUrl/quiz?page=$page&take=9"),
@@ -21,7 +21,10 @@ class ApiService {
     if (response.statusCode == 200) {
       Map<String, dynamic> responseJson = await json.decode(response.body);
       final List quizzes = responseJson['quizzes'];
-      return quizzes.map((m) => Quiz.fromJson(m)).toList();
+      final int maxPage = responseJson['maxPage'];
+      return QuizJsonMaxPage(
+          maxPage: maxPage,
+          quizzes: quizzes.map((m) => Quiz.fromJson(m)).toList());
     } else {
       throw Exception('Failed to fetch quizzes');
     }
@@ -95,7 +98,7 @@ class ApiService {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception('Failed to fetch result');
+      return false;
     }
   }
 

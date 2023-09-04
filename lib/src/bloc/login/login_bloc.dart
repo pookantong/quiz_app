@@ -12,6 +12,7 @@ part 'login_state.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginInitial()) {
     on<LoginInitialEvent>(_loginInitialEvent);
+    on<SignUpInitialEvent>(_signUpInitialEvent);
   }
 
   FutureOr<void> _loginInitialEvent(
@@ -30,6 +31,25 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       );
     } else {
       emit(LoginErrorState());
+    }
+  }
+
+  Future<FutureOr<void>> _signUpInitialEvent(
+      SignUpInitialEvent event, Emitter<LoginState> emit) async {
+    emit(SignUpLoadingState());
+    final signUpStatus = await ApiService().signUp(
+      event.username,
+      event.email,
+      event.password,
+    );
+    if (signUpStatus) {
+      emit(SignUpSuccessfulState());
+      Navigator.pop(
+        navigatorState.currentContext!,
+        AppRoute.home,
+      );
+    } else {
+      emit(SignUpErrorState());
     }
   }
 }

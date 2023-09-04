@@ -49,23 +49,49 @@ class _QuizCreatePageState extends State<QuizCreatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      backgroundColor: const Color(0xFFfed8c3),
+      body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('Total Score: ${calculateTotalScore()}'),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Quiz Name'),
-                onChanged: (value) {
-                  setState(() {
-                    quizName = value;
-                  });
-                },
+              const SizedBox(
+                height: 35,
+              ),
+              Text(
+                'Total Score: ${calculateTotalScore()}',
+                style: const TextStyle(
+                  fontFamily: 'Prompt',
+                  fontSize: 30,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 25,
+                    right: 25,
+                    bottom: 30,
+                    top: 15),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                      labelText: 'Quiz Name',
+                      labelStyle: TextStyle(
+                        fontFamily: "Prompt",
+                        fontSize: 25,
+                      )),
+                  style: const TextStyle(
+                    fontFamily: "Prompt",
+                    fontSize: 30,
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      quizName = value;
+                    });
+                  },
+                ),
               ),
               for (int i = 0; i < quizQuestions.length; i++)
                 Card(
-                  margin: EdgeInsets.all(8.0),
+                  margin: const EdgeInsets.all(8.0),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -91,11 +117,11 @@ class _QuizCreatePageState extends State<QuizCreatePage> {
                     ),
                   );
                 },
-                child: Text('Add Question'),
+                child: const Text('Add Question'),
               ),
               ElevatedButton(
                 onPressed: submitQuiz,
-                child: Text('Create'),
+                child: const Text('Create'),
               ),
             ],
           ),

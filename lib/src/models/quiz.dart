@@ -1,5 +1,15 @@
 import 'package:test_fl/src/models/question.dart';
 
+class QuizJsonMaxPage {
+  final int maxPage;
+  final List<Quiz> quizzes;
+
+  QuizJsonMaxPage({
+    required this.maxPage,
+    required this.quizzes,
+  });
+}
+
 class Quiz {
   final int quizId;
   final String name;

@@ -54,55 +54,55 @@ class _QuestionFormState extends State<QuestionForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Question'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextFormField(
-                controller: _nameController,
-                decoration: InputDecoration(labelText: 'Question Name'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter a question name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _choicesController,
-                decoration: InputDecoration(labelText: 'Choice'),
-              ),
-              ElevatedButton(
-                onPressed: addChoice,
-                child: Text('Add Choice'),
-              ),
-              Text('Choices: ${choices.join(", ")}'),
-              TextFormField(
-                controller: _correctAnswerController,
-                decoration: InputDecoration(labelText: 'Correct Answer'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter a correct answer';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _scoreController,
-                decoration: InputDecoration(labelText: 'Score'),
-                keyboardType: TextInputType.number,
-              ),
-              ElevatedButton(
-                onPressed: saveQuestion,
-                child: Text('Save Question'),
-              ),
-            ],
+      backgroundColor: const Color(0xFFfed8c3),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextFormField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(labelText: 'Question Name'),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter a question name';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _choicesController,
+                  decoration: const InputDecoration(labelText: 'Choice'),
+                ),
+                ElevatedButton(
+                  onPressed: addChoice,
+                  child: Text('Add Choice'),
+                ),
+                Text('Choices: ${choices.join(", ")}'),
+                TextFormField(
+                  controller: _correctAnswerController,
+                  decoration: InputDecoration(labelText: 'Correct Answer'),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter a correct answer';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _scoreController,
+                  decoration: const InputDecoration(labelText: 'Score'),
+                  keyboardType: TextInputType.number,
+                ),
+                ElevatedButton(
+                  onPressed: saveQuestion,
+                  child: const Text('Save Question'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

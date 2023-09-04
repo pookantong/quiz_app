@@ -20,6 +20,6 @@ class AppRoute {
         register: (context) => const RegisterPage(),
         question: (context) => const QuestionPage(),
         result: (context) => const ResultPage(),
-        create: (context) => QuizCreatePage(),
+        create: (context) => const QuizCreatePage(),
       };
 }

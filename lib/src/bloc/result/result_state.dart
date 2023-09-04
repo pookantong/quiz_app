@@ -12,6 +12,10 @@ class ResultLoadingState extends ResultState {}
 class ResultSuccessfulState extends ResultState {
   final Result result;
   final int quizId;
-
-  ResultSuccessfulState(this.result, this.quizId);
+  final List<String> userAnswers;
+  ResultSuccessfulState(
+    this.result,
+    this.quizId,
+    this.userAnswers,
+  );
 }

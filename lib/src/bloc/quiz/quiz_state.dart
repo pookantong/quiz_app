@@ -12,9 +12,11 @@ class LoadQuizLoadingState extends QuizState {}
 class LoadQuizSuccessfulState extends QuizState {
   final List<Quiz> quizzes;
   final int page;
+  final int maxPage;
 
   LoadQuizSuccessfulState({
     required this.quizzes,
     required this.page,
+    required this.maxPage,
   });
 }

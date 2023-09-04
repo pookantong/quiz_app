@@ -7,6 +7,10 @@ sealed class QuizEvent extends Equatable {
 
 class LoadQuizInitialEvent extends QuizEvent {
   final int page;
-  
+
   LoadQuizInitialEvent(this.page);
 }
+
+class IncreasePageEvent extends QuizEvent {}
+
+class DecreasePageEvent extends QuizEvent {}
